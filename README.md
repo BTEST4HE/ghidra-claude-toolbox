@@ -100,31 +100,21 @@ ghidra_toolbox/
    （関数化した場合）export_context.py を再実行 → 新しい関数が decompile 可能に
 ```
 
-### 実行時の観測を証拠として足す（静的 → 動的 → 照合）
+### 実行時の観測を証拠として足す（任意）
 
-静的解析だけでは「本当に使われているのか」が分かりません。外部エミュレータの
-デバッガ MCP で**限定的に観測**し、その結果を JSON で保存すると、
-Ghidra Toolbox 側から**同じアドレス基準で**引けます。
+静的解析だけでは「本当に使われているのか」が分かりません。エミュレータのデバッガなどで
+観測した結果を決まった形式の JSON にして置いておくと、Ghidra Toolbox 側から
+**静的解析と同じアドレス基準で**引けます。観測の手段（どのエミュレータか、手作業で
+記録するか、各自のツールで書き出すか）は問いません。**観測用のツールは同梱していません。**
 
-```
-   静的に候補を絞る          find_address_refs / find_pointers_to / classify_range
-        │
-        v
-   エミュレータで観測する     Mesen（範囲のアクセス監視）
-                             DuckStation（ブレーク / ウォッチの集計）
-                             PCSX2（スナップショットやコード捕捉）
-        │                    ※ どこまで実装があるかは各 MCP 側の話。
-        │                       Toolbox はこれらを起動も接続も制御もしません。
-        v
-   観測を JSON で保存する     <project_root>/runtime_observations/*.json
-        │                    ※ 保存するのは人間か解析セッションです。
-        v
-   根拠として照会する         list_runtime_observations
-                             get_runtime_range_evidence
-```
+1. 静的に候補を絞る — `find_address_refs` / `find_pointers_to` / `classify_range`
+2. その範囲だけを、各自の環境のデバッガで観測する
+   （Toolbox はエミュレータを起動も接続も制御もしません）
+3. 結果を `<project_root>/runtime_observations/*.json` に保存する
+   — 形式は [`schemas/runtime_observations.schema.json`](schemas/runtime_observations.schema.json)、
+   最小例は [`samples/runtime_observations.sample.json`](samples/runtime_observations.sample.json)
+4. 根拠として照会する — `list_runtime_observations` / `get_runtime_range_evidence`
 
-- 形式は [`schemas/runtime_observations.schema.json`](schemas/runtime_observations.schema.json)、
-  最小例は [`samples/runtime_observations.sample.json`](samples/runtime_observations.sample.json)。
 - 実行時アドレスは `bridge_config.json` の `address_translations` の規則でだけ
   Ghidra 番地に直します。**規則が無いものは推測せず `unmapped` として残します。**
 - ★**「観測されなかった」は「使われていない」の証明ではありません。**
@@ -201,7 +191,7 @@ Ghidra Toolbox 側から**同じアドレス基準で**引けます。
   `constants` に「どの引数にどの定数が何回渡されているか」がまとまります。
 - **外部エミュレータの観測を「証拠」として読み込めます**
   (`list_runtime_observations` / `get_runtime_range_evidence`)。
-  Mesen / DuckStation / PCSX2 などのデバッガ MCP で観測した結果を
+  エミュレータのデバッガなどで観測した結果 (観測の手段は問いません) を
   `<project_root>/runtime_observations/` に JSON で保存しておくと、
   **静的解析と同じアドレス基準で**引けます。
   ★**この MCP はエミュレータを起動も接続も制御もしません。** 読むのは
