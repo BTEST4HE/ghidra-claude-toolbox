@@ -1,0 +1,31 @@
+{
+  "schema_version": "0.1",
+  "target_program": "GAME_PS1.EXE",
+  "generated_by": "Claude Code",
+  "labels": [
+    {
+      "address": "0x800820ec",
+      "name": "PartsAttachPositionTable",
+      "operation": "set_label",
+      "confidence": "high",
+      "address_basis": "ghidra",
+      "reason": "3Dモデルのパーツ取り付け位置テーブル。要素は 3 個の 16bit 値 (x/y/z) に見える。",
+      "evidence": [
+        "find_address_refs: 参照は EXE 全体で 0x80072ccc の 1 箇所だけ (lui $a0,0x8008 @0x80072cc8 + addiu $a0,$a0,0x20ec)",
+        "参照元 0x80072cb4 は パーツ番号を index にして要素を引いている (sll $v1,$a1,2 で 4 倍している)",
+        "隣接する 0x8007ebbc も同じ関数から引かれており、対になるテーブルらしい"
+      ]
+    },
+    {
+      "address": "0x8007ebbc",
+      "name": "LzssRingBufferBase",
+      "confidence": "medium",
+      "address_basis": "ghidra",
+      "reason": "LZSS 伸長ルーチンが作業用リングバッファとして読み書きしている領域の先頭 (用途は推測)。",
+      "evidence": [
+        "0x80049f98 の lui $v0,0x8008 + 0x80049fa0 の addiu $v0,$v0,-5188 で合成される",
+        "0x80049f90 から始まる伸長ループ内で 1 バイト単位の読み書きがある"
+      ]
+    }
+  ]
+}

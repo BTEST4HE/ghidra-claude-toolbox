@@ -1,0 +1,123 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://ghidra-claude-toolbox/schemas/runtime_observations.schema.json",
+  "title": "Runtime Observations",
+  "description": "外部エミュレータのデバッガ MCP (Mesen / DuckStation / PCSX2 等) が得た**実行時の観測**を、Ghidra Claude Toolbox が読める共通の形にしたものです。人間または解析セッションが <project_root>/runtime_observations/ 配下に保存し、読み取り専用 MCP の list_runtime_observations / get_runtime_range_evidence が読みます。★この JSON は「観測できたこと」だけを記録します。**観測されなかったことは未使用の証明ではありません。**Ghidra Toolbox はエミュレータを起動も接続も制御もせず、このファイルを読むだけです。",
+  "type": "object",
+  "required": ["schema_version", "observations"],
+  "additionalProperties": true,
+  "properties": {
+    "schema_version": {
+      "type": "integer",
+      "description": "このフォーマットのバージョン。現在は 1 のみ。",
+      "const": 1
+    },
+    "capture": {
+      "type": "object",
+      "description": "この観測をどう取ったか。すべて任意だが、scenario と coverage_note は**強く推奨**（後から「何をどこまで実行したか」が分からないと、観測 0 件の意味を読み違える）。",
+      "additionalProperties": true,
+      "properties": {
+        "source": {
+          "type": "string",
+          "description": "観測元。未知の名前も許すが、既知のものは揃えること。",
+          "examples": ["mesen", "duckstation", "pcsx2", "other"]
+        },
+        "captured_at": {
+          "type": "string",
+          "description": "取得時刻 (ISO-8601 推奨)。任意。"
+        },
+        "scenario": {
+          "type": "string",
+          "description": "どの場面をプレイ・観測したか (例: \"タイトル画面からステージ1開始まで\")。"
+        },
+        "target_id": {
+          "type": "string",
+          "description": "ROM / ISO / ELF の hash や識別子。任意。別のビルドの観測を混ぜていないかの確認に使う。"
+        },
+        "coverage_note": {
+          "type": "string",
+          "description": "この観測で何をどこまで実行したか。**観測 0 件を「未使用」と読み違えないために要る。**"
+        }
+      }
+    },
+    "address_context": {
+      "$ref": "#/definitions/address_context",
+      "description": "ファイル全体の既定のアドレス基準。observation 側で上書きできる。"
+    },
+    "observations": {
+      "type": "array",
+      "description": "観測の配列。",
+      "items": { "$ref": "#/definitions/observation" }
+    }
+  },
+  "definitions": {
+    "address_context": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "basis": {
+          "type": "string",
+          "description": "address が何の基準か。runtime = エミュレータ上の実行時アドレス (変換が要る)。ghidra = すでに Ghidra のアドレス (変換しない)。",
+          "enum": ["runtime", "ghidra"]
+        },
+        "translation": {
+          "type": ["string", "null"],
+          "description": "bridge_config.json の address_translations に書いた規則名。basis=runtime のとき、これが無いと変換できず unmapped になる。**推測変換はしない。**"
+        },
+        "reverse": {
+          "type": "boolean",
+          "description": "規則を逆向きに引くか (translate_address の reverse と同じ)。既定 false。"
+        }
+      }
+    },
+    "observation": {
+      "type": "object",
+      "required": ["kind", "address"],
+      "additionalProperties": true,
+      "properties": {
+        "kind": {
+          "type": "string",
+          "description": "観測の種別。execute = そこを実行した / read = そこを読んだ / write = そこへ書いた。",
+          "enum": ["execute", "read", "write"]
+        },
+        "address": {
+          "type": "string",
+          "description": "観測したアドレス。**0x 始まりの 16 進文字列が正規形**（整数は不可）。",
+          "pattern": "^0[xX][0-9a-fA-F]+$"
+        },
+        "size": {
+          "type": "integer",
+          "description": "アクセス幅 (バイト)。既定 1。read / write は [address, address+size-1] の範囲として扱う。",
+          "minimum": 1
+        },
+        "pc": {
+          "type": "string",
+          "description": "そのアクセスを行った命令のアドレス。任意だが、あると「誰が触ったか」が静的側と繋がる。",
+          "pattern": "^0[xX][0-9a-fA-F]+$"
+        },
+        "count": {
+          "type": "integer",
+          "description": "観測回数 (アクセスカウンタやヒット集計の合計)。既定 1。",
+          "minimum": 1
+        },
+        "scenario": {
+          "type": "string",
+          "description": "この観測だけ場面が違うときに書く。capture.scenario を上書きする。"
+        },
+        "note": {
+          "type": "string",
+          "description": "自由記述。任意。"
+        },
+        "address_context": {
+          "$ref": "#/definitions/address_context",
+          "description": "この観測だけアドレス基準が違うときに書く。ファイル既定を上書きする。"
+        },
+        "metadata": {
+          "type": "object",
+          "description": "観測元ごとの生データ。Toolbox は解釈せず、そのまま持ち回るだけ。",
+          "additionalProperties": true
+        }
+      }
+    }
+  }
+}

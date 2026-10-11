@@ -1,0 +1,31 @@
+{
+  "schema_version": "0.1",
+  "target_program": "vc2.bin",
+  "generated_by": "Claude Code",
+  "comments": [
+    {
+      "address": "0x00123456",
+      "address_basis": "ghidra",
+      "type": "pre",
+      "comment": "[AI] Candidate stage route loader. Confirm caller and table references.",
+      "confidence": "medium",
+      "reason": "Called from multiple functions and references table-like data.",
+      "evidence": [
+        "xref from 0x00120000",
+        "references string at 0x0012A000"
+      ]
+    },
+    {
+      "address": "0x001234A0",
+      "address_basis": "ghidra",
+      "type": "eol",
+      "comment": "[AI] Candidate HP subtraction. Runtime address mapping is assumed identical.",
+      "confidence": "low",
+      "reason": "Writes to HP-like location after damage calculation.",
+      "evidence": [
+        "Ghidra function references player-like structure",
+        "Runtime dump shows HP changed after hit"
+      ]
+    }
+  ]
+}

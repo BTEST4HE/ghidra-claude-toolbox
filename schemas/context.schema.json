@@ -1,0 +1,71 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://ghidra-claude-toolbox/schemas/context.schema.json",
+  "title": "Exported Context (program.json)",
+  "description": "export_context.py が出力する program.json の仕様です。functions.json などその他のファイルは README / docs を参照してください。",
+  "type": "object",
+  "required": ["schema_version", "source_model", "program_name"],
+  "additionalProperties": true,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "description": "context フォーマットのバージョン。例: \"0.1\""
+    },
+    "source_model": {
+      "type": "string",
+      "description": "解析対象の由来。bridge_config.json から取得、無ければ unknown。",
+      "enum": ["executable", "raw_binary", "memory_dump", "rom", "overlay", "mixed", "unknown"]
+    },
+    "program_name": { "type": "string" },
+    "executable_path": { "type": ["string", "null"] },
+    "executable_format": { "type": ["string", "null"] },
+    "language_id": { "type": ["string", "null"] },
+    "compiler_spec_id": { "type": ["string", "null"] },
+    "image_base": { "type": ["string", "null"] },
+    "min_address": { "type": ["string", "null"] },
+    "max_address": { "type": ["string", "null"] },
+    "memory_blocks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": { "type": ["string", "null"] },
+          "start": { "type": ["string", "null"] },
+          "end": { "type": ["string", "null"] },
+          "size": { "type": ["integer", "null"] },
+          "read": { "type": ["boolean", "null"] },
+          "write": { "type": ["boolean", "null"] },
+          "execute": { "type": ["boolean", "null"] },
+          "initialized": { "type": ["boolean", "null"] }
+        }
+      }
+    },
+    "address_ranges": {
+      "type": "object",
+      "properties": {
+        "min_address": { "type": ["string", "null"] },
+        "max_address": { "type": ["string", "null"] },
+        "executable_block_ranges": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "start": { "type": ["string", "null"] },
+              "end": { "type": ["string", "null"] }
+            }
+          }
+        },
+        "initialized_block_ranges": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "start": { "type": ["string", "null"] },
+              "end": { "type": ["string", "null"] }
+            }
+          }
+        }
+      }
+    }
+  }
+}

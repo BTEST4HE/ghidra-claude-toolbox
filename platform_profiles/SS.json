@@ -1,0 +1,13 @@
+{
+  "name": "SS",
+  "display": "SEGA SATURN (SH-2 ×2)",
+  "arch": "Hitachi SH-2 (master/slave dual)",
+  "endian": "big",
+  "modes": [],
+  "mode_required": false,
+  "context_register": null,
+  "mode_values": {},
+  "has_delay_slots": true,
+  "return_detection": "flowtype",
+  "notes": "return 判定は FlowType.isTerminal() (アーキ非依存)。rts は FlowType=TERMINATOR なので return ニーモニックはプロファイルに持たない。SH-2 は big endian (SH-4 と逆なので注意)。遅延スロットあり。HWRAM 0x06000000 (1MB) / LWRAM 0x00200000 (1MB)。CD ブートの 1st_read は慣例的に 0x06004000 付近だがタイトル毎に要確認。master/slave の 2 CPU。サウンドは別 CPU (68000) なのでサウンドドライバのバイナリを SH-2 として読まないこと。アドレス基準は必ず notes/address_map.md で確認する。既存の saturn.json と内容は同一 (bridge_config の platform_profile=\"SS\" 表記用)。"
+}

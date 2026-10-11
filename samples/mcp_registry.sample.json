@@ -1,0 +1,19 @@
+{
+  "default_program": "game_a",
+  "games": {
+    "game_a": {
+      "root": "C:\\RE\\ai_workspaces\\GAME_A",
+      "label": "ゲームA (1 Program)"
+    },
+    "game_b": {
+      "label": "ゲームB (EXE 本体 + オーバーレイ)",
+      "programs": {
+        "main": {"root": "C:\\RE\\ai_workspaces\\GAME_B", "label": "EXE 本体"},
+        "overlay": {"root": "C:\\RE\\ai_workspaces\\GAME_B\\overlay", "label": "実行時オーバーレイ"}
+      }
+    },
+    "_comment": {
+      "note": "先頭が _ のキーは読み飛ばされます。program 引数に渡すキーは game_a / game_b:main / game_b:overlay です。"
+    }
+  }
+}

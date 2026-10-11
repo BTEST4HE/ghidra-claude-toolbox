@@ -1,0 +1,34 @@
+{
+  "schema_version": "0.1",
+  "target_program": "example.gba",
+  "generated_by": "Claude Code",
+  "platform": "gba",
+  "functions": [
+    {
+      "address": "0x08012340",
+      "operation": "define_function",
+      "platform": "gba",
+      "mode": "thumb",
+      "address_basis": "ghidra",
+      "confidence": "medium",
+      "reason": "Pointer-table entry referenced with the Thumb bit set; disassembles cleanly as Thumb.",
+      "evidence": [
+        "Referenced as 0x08012341 from pointer table (odd address = Thumb)",
+        "Thumb disassembly has valid control flow ending in a return",
+        "ARM disassembly at this address looks invalid / low-confidence"
+      ]
+    },
+    {
+      "entry": "0x00123456",
+      "operation": "define_function",
+      "platform": "psx",
+      "address_basis": "ghidra",
+      "confidence": "high",
+      "reason": "Called from defined code; bytes already disassembled as MIPS.",
+      "evidence": [
+        "JAL target from 0x00120000",
+        "ends in jr ra (terminator flow)"
+      ]
+    }
+  ]
+}

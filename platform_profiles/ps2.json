@@ -1,0 +1,13 @@
+{
+  "name": "ps2",
+  "display": "PlayStation 2 (Emotion Engine, MIPS R5900)",
+  "arch": "MIPS R5900 (EE)",
+  "endian": "little",
+  "modes": [],
+  "mode_required": false,
+  "context_register": null,
+  "mode_values": {},
+  "has_delay_slots": true,
+  "return_detection": "flowtype",
+  "notes": "jr $ra は FlowType=TERMINATOR。分岐遅延スロットあり。EE メイン RAM は 32MB、ベースは 0x00100000 付近 (ELF/メモリダンプで確認)。IOP (MIPS R3000) は別 CPU なので混同しない。address_map で基準を確認。"
+}

@@ -1,0 +1,88 @@
+{
+  "_note": "外部エミュレータのデバッガ MCP で観測した結果を、Ghidra Claude Toolbox が読める形にしたサンプルです。<project_root>/runtime_observations/ の下に置くと list_runtime_observations / get_runtime_range_evidence が読みます。★ここに出てくるアドレスは説明用の架空の値で、実在のゲームには対応しません。★Toolbox はエミュレータを起動も接続も制御もしません。このファイルを保存するのは人間か解析セッションです。",
+  "schema_version": 1,
+  "capture": {
+    "source": "duckstation",
+    "captured_at": "2026-09-20T12:34:56",
+    "scenario": "タイトル画面からステージ1開始まで (約30秒)",
+    "target_id": "sha1:0000000000000000000000000000000000000000",
+    "coverage_note": "ポーズ・リトライ・ステージ2以降は試していない。メニューは決定のみ。"
+  },
+  "address_context": {
+    "basis": "runtime",
+    "translation": "ee_kseg0_to_ram",
+    "reverse": true
+  },
+  "observations": [
+    {
+      "kind": "execute",
+      "address": "0x00010000",
+      "count": 118,
+      "pc": "0x00010000",
+      "note": "ブレークポイントのヒット集計 (stop_on_hit=0 で回した)"
+    },
+    {
+      "kind": "read",
+      "address": "0x00020100",
+      "size": 4,
+      "count": 42,
+      "pc": "0x00011234",
+      "note": "ウォッチポイント。読んでいるのは 1 か所だけだった"
+    },
+    {
+      "kind": "write",
+      "address": "0x00020100",
+      "size": 4,
+      "count": 7,
+      "pc": "0x000112a0",
+      "scenario": "ステージ1開始の瞬間だけ",
+      "note": "初期化でしか書かれていないように見える (この場面では)"
+    },
+    {
+      "kind": "write",
+      "address": "0x00030000",
+      "size": 2,
+      "count": 1200,
+      "metadata": {
+        "raw": "アクセスカウンタの生値など、観測元ごとの情報をそのまま置ける"
+      }
+    },
+    {
+      "kind": "execute",
+      "address": "0x80042000",
+      "count": 3,
+      "note": "この 1 件だけ Ghidra 基準で記録した例 (変換しない)",
+      "address_context": {
+        "basis": "ghidra"
+      }
+    }
+  ],
+  "_examples_other_sources": {
+    "_note": "別の観測元の書き方の例です。読み込み対象にしたい場合は、この中身を別ファイルとして runtime_observations/ に置いてください (この _ で始まるキーは Toolbox が無視します)。",
+    "mesen": {
+      "schema_version": 1,
+      "capture": {
+        "source": "mesen",
+        "scenario": "1面をクリアするまで",
+        "coverage_note": "アクセスカウンタを reset してから計測。work RAM だけを見ている。"
+      },
+      "address_context": { "basis": "runtime", "translation": "wram_to_ghidra" },
+      "observations": [
+        { "kind": "write", "address": "0x7e0300", "size": 1, "count": 980 },
+        { "kind": "read", "address": "0x7e0300", "size": 1, "count": 15200 }
+      ]
+    },
+    "pcsx2": {
+      "schema_version": 1,
+      "capture": {
+        "source": "pcsx2",
+        "scenario": "レース開始からゴールまで 1 周",
+        "coverage_note": "リプレイ・リザルト画面は含まない。"
+      },
+      "address_context": { "basis": "runtime", "translation": "ee_kseg0_to_ram", "reverse": true },
+      "observations": [
+        { "kind": "execute", "address": "0x00123456", "count": 1, "note": "1 回だけ通った分岐" }
+      ]
+    }
+  }
+}

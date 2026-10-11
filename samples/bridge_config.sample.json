@@ -1,0 +1,59 @@
+{
+  "game_name": "example_game",
+  "platform": "PlayStation 2",
+  "source_model": "executable",
+  "ghidra_program_source": "main ELF",
+  "runtime_dump_source": "PCSX2 EE RAM dump",
+  "address_basis": "EE runtime virtual address",
+  "address_map_note": "notes/address_map.md",
+  "main_executable": "SLXX_000.00",
+  "dumps_dir": "dumps",
+  "source_roots": [
+    "C:\\RE\\game_analysis\\example_game\\materials"
+  ],
+  "ghidra_exports_dir": "ghidra_exports",
+  "ghidra_version": "11.x",
+  "ghidra_path": "C:\\Tools\\ghidra_11.x_PUBLIC",
+  "toolbox_schema_version": "0.1",
+  "export_memory": false,
+  "export_memory_max_mb": 32,
+  "export_memory_total_max_mb": 128,
+  "allowed_apply_operations": [
+    "comments"
+  ],
+  "address_translations": [
+    {
+      "name": "ee_ram_to_ghidra",
+      "kind": "offset",
+      "delta": "0x80000000",
+      "src_range": [
+        "0x00000000",
+        "0x01ffffff"
+      ],
+      "note": "PCSX2 の RAM 表示 (0x00xxxxxx) -> Ghidra の EE 仮想アドレス (0x80xxxxxx)。runtime_observations の address_context.translation にこの名前を書くと、観測アドレスが Ghidra 番地に直ります。"
+    }
+  ],
+  "overlays": [
+    {
+      "name": "stage01",
+      "path": "dumps/STAGE01.BIN",
+      "base": "0x801c0000",
+      "offset": 0,
+      "length": null,
+      "note": "ステージデータ。実行時に 0x801c0000 へ読み込まれる (Ghidra の Program には入っていない)",
+      "scan": true
+    },
+    {
+      "name": "height",
+      "path": "dumps/HEIGHT.BIN",
+      "base": "0x801d0000",
+      "note": "地形の高さテーブル (s16 の並び)"
+    }
+  ],
+  "record_formats": {
+    "part_entry": "id:u8,dx:s8,dy:s8,dz:s8,dw:s8",
+    "height_cell": "h:s16,flags:u16"
+  },
+  "decompile_line_map": true,
+  "decompile_scope": "ask"
+}

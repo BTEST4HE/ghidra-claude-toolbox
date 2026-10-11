@@ -1,0 +1,13 @@
+{
+  "name": "ps1",
+  "display": "PlayStation (MIPS R3000)",
+  "arch": "MIPS R3000 / R3000A (LE)",
+  "endian": "little",
+  "modes": [],
+  "mode_required": false,
+  "context_register": null,
+  "mode_values": {},
+  "has_delay_slots": true,
+  "return_detection": "flowtype",
+  "notes": "return 判定は FlowType.isTerminal() (アーキ非依存)。jr $ra は FlowType=TERMINATOR なので return ニーモニックはプロファイルに持たない。MIPS R3000 は little endian、分岐遅延スロットあり、モード切替なし。逆アセンブラは mcp/disasm の mips (ps1 -> mips の対応あり)。PS-EXE のロードアドレス (ヘッダの t_addr。0x80010000 が多いがタイトル毎に要確認) と RAM ダンプの基準は notes/address_map.md で確認する。PSY-Q の GTE マクロ等の未初期化ブロックは decompile しない。既存の psx.json と内容は同一 (bridge_config の platform_profile=\"ps1\" 表記用)。"
+}

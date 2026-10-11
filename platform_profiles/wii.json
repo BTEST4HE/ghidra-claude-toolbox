@@ -1,0 +1,13 @@
+{
+  "name": "wii",
+  "display": "Wii / GameCube (PowerPC Broadway/Gekko)",
+  "arch": "PowerPC (Broadway/Gekko)",
+  "endian": "big",
+  "modes": [],
+  "mode_required": false,
+  "context_register": null,
+  "mode_values": {},
+  "has_delay_slots": false,
+  "return_detection": "flowtype",
+  "notes": "blr は FlowType=TERMINATOR。ビッグエンディアン。ベース (0x80000000 MEM1 等) は address_map で確認。"
+}

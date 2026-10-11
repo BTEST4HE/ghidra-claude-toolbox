@@ -1,0 +1,13 @@
+{
+  "name": "gba",
+  "display": "Game Boy Advance (ARM7TDMI)",
+  "arch": "ARM7TDMI (ARM + Thumb)",
+  "endian": "little",
+  "modes": ["arm", "thumb"],
+  "mode_required": true,
+  "context_register": "TMode",
+  "mode_values": { "arm": 0, "thumb": 1 },
+  "has_delay_slots": false,
+  "return_detection": "flowtype",
+  "notes": "未定義領域を関数化するときは mode (arm/thumb) を必須にする。誤ったモードで disassemble すると、データが『いかにも命令っぽいゴミ』に化けるため。mode 未指定の提案は apply 側で拒否し、既存関数内 or 既存コンテキストが確定している場合のみ省略を許す。Thumb 関数は奇数アドレス (entry|1) で参照されるのが手掛かり。proposal の evidence に『なぜそのモードか』(奇数アドレス参照 / 該当モードの制御フローが妥当 / 逆モードは無効っぽい 等) を残すこと。"
+}

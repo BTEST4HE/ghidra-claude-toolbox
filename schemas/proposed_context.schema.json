@@ -1,0 +1,56 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://ghidra-claude-toolbox/schemas/proposed_context.schema.json",
+  "title": "Proposed SNES Context (DP / DBR)",
+  "description": "65816 (ghidra-snes) のダイレクトページ (DP) / データバンク (DBR) を、範囲ごとの『レジスタの値』として設定する案。apply_snes_context.py が読み込む。per-project の allowed_apply_operations に \"context\" がある場合のみ apply される (既定禁止・明示 opt-in)。ghidra-snes の SLEIGH では D は DP (16bit)、DBR は DBR (8bit) で、どちらも contextreg ではない普通のレジスタ (命令長は変わらない)。M/X/E (ctx_MF/ctx_XF/ctx_EF) はここでは扱わない。設定前の値は共有台帳 defined_functions.json に記録され、revert_operations.py で戻せる。",
+  "type": "object",
+  "required": ["schema_version", "target_program", "contexts"],
+  "additionalProperties": true,
+  "properties": {
+    "schema_version": {"type": "string"},
+    "target_program": {"type": "string", "minLength": 1, "description": "対象とする Ghidra Program 名 (必須)。一致しないと apply は何も変更せずに中止する。"},
+    "generated_by": {"type": "string"},
+    "contexts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["register", "value", "start", "evidence"],
+        "additionalProperties": true,
+        "properties": {
+          "register": {
+            "type": "string",
+            "description": "DP / DBR (別名 D -> DP)。B はアキュムレータ上位バイトなので不可。",
+            "enum": ["DP", "D", "DBR"]
+          },
+          "value": {
+            "type": ["string", "integer"],
+            "description": "設定する値。DP は 0..0xFFFF、DBR は 0..0xFF。'0x..' / '$..' / 10 進。"
+          },
+          "start": {"type": "string", "pattern": "^0[xX][0-9a-fA-F]+$", "description": "範囲の先頭 (Ghidra 番地)。"},
+          "end": {"type": "string", "pattern": "^0[xX][0-9a-fA-F]+$", "description": "範囲の末尾 (この番地を含む)。省略時は start と同じ。"},
+          "address_basis": {"type": "string", "enum": ["ghidra", "runtime", "dump_offset", "unknown"]},
+          "confidence": {"type": "string", "enum": ["low", "medium", "high"], "description": "low は apply でスキップされる。"},
+          "reason": {"type": "string"},
+          "evidence": {
+            "type": "array",
+            "minItems": 1,
+            "description": "値の根拠 (必須)。実測かコードの事実か区別して書く。",
+            "items": {
+              "anyOf": [
+                {"type": "string", "minLength": 1},
+                {
+                  "type": "object",
+                  "required": ["detail"],
+                  "properties": {
+                    "kind": {"type": "string", "enum": ["runtime", "code", "cdl", "doc"]},
+                    "detail": {"type": "string", "minLength": 1}
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

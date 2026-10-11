@@ -1,0 +1,32 @@
+{
+  "schema_version": "0.1",
+  "target_program": "GAME_SFC",
+  "generated_by": "Claude Code",
+  "contexts": [
+    {
+      "register": "DP",
+      "value": "0x0000",
+      "start": "0x808000",
+      "end": "0x8fffff",
+      "address_basis": "ghidra",
+      "confidence": "high",
+      "reason": "DP は常に $0000 と推定 (TCD は初期化中の一時変更だけ)",
+      "evidence": [
+        {"kind": "runtime", "detail": "Mesen: $00:9153 実行中 D=$0000 (1 点のみ)"},
+        {"kind": "code", "detail": "TCD は初期化 $80:80E3 の一時変更だけで、PLD で戻る"}
+      ]
+    },
+    {
+      "register": "DBR",
+      "value": "0x00",
+      "start": "0x809144",
+      "end": "0x8091ff",
+      "address_basis": "ghidra",
+      "confidence": "medium",
+      "reason": "物理処理の関数群は DBR=$00 で走っている (実測 1 点)",
+      "evidence": [
+        {"kind": "runtime", "detail": "Mesen: $00:9153 実行中 DBR=$00"}
+      ]
+    }
+  ]
+}

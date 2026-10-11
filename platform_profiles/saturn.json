@@ -1,0 +1,13 @@
+{
+  "name": "saturn",
+  "display": "SEGA Saturn (SH-2 ×2)",
+  "arch": "Hitachi SH-2 (master/slave dual)",
+  "endian": "big",
+  "modes": [],
+  "mode_required": false,
+  "context_register": null,
+  "mode_values": {},
+  "has_delay_slots": true,
+  "return_detection": "flowtype",
+  "notes": "rts は FlowType=TERMINATOR。SH-2 はビッグエンディアン (SH-4 と違うので注意)。遅延スロットあり。HWRAM 0x06000000 (1MB) / LWRAM 0x00200000 (1MB)。マスタ/スレーブの 2 CPU。address_map で基準を確認。"
+}

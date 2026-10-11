@@ -1,0 +1,69 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://ghidra-claude-toolbox/schemas/proposed_comments.schema.json",
+  "title": "Proposed Comments",
+  "description": "Claude Code / Codex が作成する [AI] コメント案の仕様です。apply_comments.py が読み込みます。",
+  "type": "object",
+  "required": ["schema_version", "target_program", "comments"],
+  "additionalProperties": true,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "description": "コメント案フォーマットのバージョン。例: \"0.1\""
+    },
+    "target_program": {
+      "type": "string",
+      "minLength": 1,
+      "description": "対象とする Ghidra Program 名 (必須)。apply_comments.py は現在の Program 名と一致しないと何も変更せずに中止する。例: \"vc2.bin\""
+    },
+    "generated_by": {
+      "type": "string",
+      "description": "生成者。例: \"Claude Code\" / \"Codex\""
+    },
+    "comments": {
+      "type": "array",
+      "description": "コメント案の配列。",
+      "items": {
+        "type": "object",
+        "required": ["address", "type", "comment"],
+        "additionalProperties": true,
+        "properties": {
+          "address": {
+            "type": "string",
+            "description": "アドレス。16 進表記。例: \"0x00123456\"",
+            "pattern": "^0[xX][0-9a-fA-F]+$"
+          },
+          "address_basis": {
+            "type": "string",
+            "description": "アドレスの基準。apply は ghidra または未指定のみ反映する。",
+            "enum": ["ghidra", "runtime", "dump_offset", "unknown"]
+          },
+          "type": {
+            "type": "string",
+            "description": "コメント種別。",
+            "enum": ["plate", "pre", "eol", "repeatable", "post"]
+          },
+          "comment": {
+            "type": "string",
+            "description": "コメント本文。必ず \"[AI]\" で始めること。",
+            "pattern": "^\\s*\\[AI\\]"
+          },
+          "confidence": {
+            "type": "string",
+            "description": "推測の確度。",
+            "enum": ["low", "medium", "high"]
+          },
+          "reason": {
+            "type": "string",
+            "description": "この案を出した理由。"
+          },
+          "evidence": {
+            "type": "array",
+            "description": "根拠 (xref / 文字列参照 / 呼び出し元 / ダンプ対応など)。",
+            "items": { "type": "string" }
+          }
+        }
+      }
+    }
+  }
+}

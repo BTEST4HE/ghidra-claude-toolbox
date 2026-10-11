@@ -1,0 +1,13 @@
+{
+  "name": "psx",
+  "display": "PlayStation (MIPS R3000)",
+  "arch": "MIPS R3000 / R3000A (LE)",
+  "endian": "little",
+  "modes": [],
+  "mode_required": false,
+  "context_register": null,
+  "mode_values": {},
+  "has_delay_slots": true,
+  "return_detection": "flowtype",
+  "notes": "jr $ra は FlowType=TERMINATOR。分岐遅延スロットあり。EXE/RAM のベース (0x80010000 等) は address_map で確認。"
+}

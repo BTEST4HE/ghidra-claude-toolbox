@@ -1,0 +1,81 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://ghidra-claude-toolbox/schemas/proposed_functions.schema.json",
+  "title": "Proposed Functions",
+  "description": "Claude Code / Codex が提案する『関数化 (Create Function) する未定義コードのエントリ』。apply_functions.py が読み込む。リネーム・型変更・配列化は含めない (entry を関数化するだけ)。マルチプラットフォーム対応 (アーキ固有値は platform_profiles/ 側)。",
+  "type": "object",
+  "required": ["schema_version", "target_program", "functions"],
+  "additionalProperties": true,
+  "properties": {
+    "schema_version": { "type": "string" },
+    "target_program": { "type": "string", "minLength": 1, "description": "対象とする Ghidra Program 名 (必須)。一致しないと apply / revert は何も変更せずに中止する。" },
+    "generated_by": { "type": "string" },
+    "platform": {
+      "type": "string",
+      "description": "省略可。全体の既定プラットフォーム (各 item で上書き可)。例: \"gba\" / \"psx\" / \"wii\" / \"sh4\"。未指定なら bridge_config の platform_profile を使う。"
+    },
+    "functions": {
+      "type": "array",
+      "description": "関数化する対象の配列。",
+      "items": {
+        "type": "object",
+        "anyOf": [
+          { "required": ["entry"] },
+          { "required": ["address"] }
+        ],
+        "additionalProperties": true,
+        "properties": {
+          "address": {
+            "type": "string",
+            "description": "対象アドレス (16 進)。entry の別名。どちらか一方を指定。",
+            "pattern": "^0[xX][0-9a-fA-F]+$"
+          },
+          "entry": {
+            "type": "string",
+            "description": "関数エントリ (16 進)。address の別名。",
+            "pattern": "^0[xX][0-9a-fA-F]+$"
+          },
+          "operation": {
+            "type": "string",
+            "description": "操作種別。define_function は apply_functions.py、undefine_function/clear_code は apply_undefine.py が処理する (混在ファイル可)。",
+            "enum": ["define_function", "undefine_function", "clear_code"]
+          },
+          "end": {
+            "type": "string",
+            "description": "clear_code の終端アドレス (16 進, 含む)。範囲 [address, end] を未定義へ。undefine_max_bytes 以下であること。",
+            "pattern": "^0[xX][0-9a-fA-F]+$"
+          },
+          "force": {
+            "type": "boolean",
+            "description": "true で protect チェック (リネーム/コメント/CALLターゲット/ラベル) を無視する。範囲上限 (undefine_max_bytes) は force でも無視できない。既定 false。"
+          },
+          "platform": {
+            "type": "string",
+            "description": "この item のプラットフォーム (省略時はトップレベル/bridge_config)。例: \"gba\"。"
+          },
+          "mode": {
+            "type": "string",
+            "description": "命令セットモード。ARM/Thumb 等のモード持ちアーキで必須 (GBA など)。",
+            "enum": ["arm", "thumb"]
+          },
+          "address_basis": {
+            "type": "string",
+            "description": "アドレスの基準。apply は ghidra または未指定のみ処理する。",
+            "enum": ["ghidra", "runtime", "dump_offset", "unknown"]
+          },
+          "name_hint": {
+            "type": ["string", "null"],
+            "description": "参考のみ。apply はリネームせず Ghidra 既定名 (FUN_<addr>) を使う。"
+          },
+          "confidence": { "type": "string", "enum": ["low", "medium", "high"] },
+          "reason": { "type": "string" },
+          "evidence": {
+            "type": "array",
+            "description": "根拠。モード持ちアーキでは『なぜそのモードか』(奇数アドレス参照 / 制御フローの妥当性 / 逆モードの無効さ 等) も書く。",
+            "items": { "type": "string" }
+          }
+        }
+      }
+    }
+  }
+}

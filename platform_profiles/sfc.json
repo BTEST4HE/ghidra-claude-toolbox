@@ -1,0 +1,18 @@
+{
+  "name": "sfc",
+  "display": "Super Famicom / SNES (Ricoh 5A22 = WDC 65C816)",
+  "arch": "WDC 65C816 (16bit, 24bit address bus)",
+  "endian": "little",
+  "modes": [],
+  "mode_required": false,
+  "context_register": null,
+  "mode_values": {},
+  "mode_flags_info": {
+    "M": "1 = A / メモリアクセス 8bit, 0 = 16bit (LDA #imm 等の即値長が変わる)",
+    "X": "1 = X / Y 8bit, 0 = 16bit (LDX #imm 等の即値長が変わる)",
+    "E": "エミュレーションモード (6502 互換)。リセット直後は E=1"
+  },
+  "has_delay_slots": false,
+  "return_detection": "flowtype",
+  "notes": "return 判定は FlowType.isTerminal() (RTS / RTL / RTI)。return ニーモニックはプロファイルに持たない。little endian、遅延スロットなし。★65816 は実質モード持ち: M/X フラグ (REP/SEP で切替) で即値のバイト長が変わり、誤ると後続が全部ずれる (GBA の ARM/Thumb 取り違えと同種の事故)。ただし (1) M と X の 2 本 (+E) で apply_functions の単一 context_register 方式に載らない、(2) コンテキストレジスタ名は使う Ghidra 65816 拡張に依存し未確定、のため現状は mode_required=false にしている。関数作成 (functions) を allowed_apply_operations に入れる前に、export の language_id から拡張のコンテキストレジスタ名 (M/X 相当) を確認し、apply_functions を複数レジスタ対応にしてから mode_required=true に上げること。それまでは関数化の提案に『その入口での M/X の根拠 (直前の REP/SEP、呼び出し元の状態)』を evidence として残す。Ghidra 標準には 65816 が無いので拡張が必要。mcp/disasm に 65816 モジュールは無い (生逆アセンブル系 MCP ツールは未対応)。番地: LoROM は bank:8000-FFFF に ROM 32KiB ずつ、HiROM は $C0-$FF:0000-FFFF。WRAM $7E:0000-$7F:FFFF。$80-$FF は $00-$7F のミラー (FastROM)。ゲームごとの基準は notes/address_map.md で確認。"
+}

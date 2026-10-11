@@ -1,0 +1,13 @@
+{
+  "name": "sh4",
+  "display": "Dreamcast (SH-4)",
+  "arch": "SuperH4",
+  "endian": "little",
+  "modes": [],
+  "mode_required": false,
+  "context_register": null,
+  "mode_values": {},
+  "has_delay_slots": true,
+  "return_detection": "flowtype",
+  "notes": "rts/rte は FlowType=TERMINATOR で検出 (ニーモニック非依存)。遅延スロットあり (return の直後にもう1命令)。"
+}

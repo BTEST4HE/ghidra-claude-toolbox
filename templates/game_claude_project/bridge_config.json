@@ -1,0 +1,27 @@
+{
+  "game_name": "example_game",
+  "platform": "PlayStation 2",
+  "source_model": "executable",
+  "ghidra_program_source": "main ELF",
+  "runtime_dump_source": "PCSX2 EE RAM dump",
+  "address_basis": "EE runtime virtual address",
+  "address_map_note": "notes/address_map.md",
+  "main_executable": "",
+  "dumps_dir": "dumps",
+  "source_roots": [],
+  "ghidra_exports_dir": "ghidra_exports",
+  "ghidra_version": "",
+  "ghidra_path": "",
+  "toolbox_schema_version": "0.1",
+  "address_translations": [],
+  "overlays": [],
+  "record_formats": {},
+  "export_memory": false,
+  "export_memory_max_mb": 32,
+  "export_memory_total_max_mb": 128,
+  "allowed_apply_operations": [
+    "comments"
+  ],
+  "decompile_line_map": true,
+  "decompile_scope": "ask"
+}

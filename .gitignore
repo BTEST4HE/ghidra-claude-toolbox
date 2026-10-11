@@ -1,0 +1,103 @@
+# ---- Python ----------------------------------------------------------------
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# ---- バックアップ / 一時ファイル -----------------------------------------------
+*.bak
+*.bak_*
+*.bak.*
+*.orig
+*.tmp
+*~
+
+# ---- Windows / エディタ ------------------------------------------------------
+*.lnk
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+
+# ---- 個人の設定 (絶対パスや環境を含む) -----------------------------------------
+mcp_registry.json
+.mcp.json
+.claude/
+*.local.json
+# 道具箱を改修する AI 向けのローカル指示 (ルート直下だけ。templates/ のひな形は追跡する)
+/CLAUDE.md
+# 配布用 zip を作る作業用バッチ (配布物には含めない)
+/make_release_zip.bat
+
+# ---- 解析の生成物 (ゲーム用プロジェクトをこの中に作ってしまったとき用) ---------
+ghidra_exports/*
+extracted/
+logs/*
+*.log
+export_log.txt
+proposals/*.json
+runtime_observations/*.json
+*.ledger.json
+
+# ---- Ghidra プロジェクト ------------------------------------------------------
+*.gpr
+*.rep/
+*.lock
+*.lock~
+
+# ---- ROM / BIOS / ディスクイメージ / ダンプ / セーブ -----------------------------
+dumps/*
+*.bin
+*.iso
+*.img
+*.cue
+*.chd
+*.gdi
+*.cdi
+*.mdf
+*.mds
+*.nrg
+*.ecm
+*.pbp
+*.gba
+*.agb
+*.nds
+*.sfc
+*.smc
+*.fig
+*.nes
+*.fds
+*.gb
+*.gbc
+*.n64
+*.z64
+*.v64
+*.gcm
+*.gcz
+*.rvz
+*.wbfs
+*.wad
+*.dol
+*.rel
+*.elf
+*.irx
+*.exe
+*.dll
+*.rom
+*.zip
+*.7z
+*.rar
+*.sav
+*.srm
+*.mcr
+*.mcd
+*.ps2
+*.state
+*.sst
+*.ss[0-9]
+*.cdl
+*.dmp
+*.raw
+
+# ---- テンプレートの空フォルダ印は残す -------------------------------------------
+!.gitkeep

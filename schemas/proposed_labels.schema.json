@@ -1,0 +1,91 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://ghidra-claude-toolbox/schemas/proposed_labels.schema.json",
+  "title": "Proposed Labels",
+  "description": "Claude Code / Codex が提案する『データテーブル等への命名 (ラベル付け)』。apply_labels.py が読み込む。ラベル付けは実質リネームなので、per-project の allowed_apply_operations に \"labels\" がある場合のみ apply される (既定禁止・明示 opt-in)。既存の名前は上書きしないのが既定 (force 明示時のみ)。関数エントリへの適用は force でも常に拒否される (関数名の自動変更は常に禁止のため)。",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "target_program",
+    "labels"
+  ],
+  "additionalProperties": true,
+  "properties": {
+    "schema_version": {
+      "type": "string"
+    },
+    "target_program": {
+      "type": "string",
+      "minLength": 1,
+      "description": "対象とする Ghidra Program 名 (必須)。一致しないと apply は何も変更せずに中止する。"
+    },
+    "generated_by": {
+      "type": "string"
+    },
+    "labels": {
+      "type": "array",
+      "description": "命名する対象の配列。",
+      "items": {
+        "type": "object",
+        "required": [
+          "address",
+          "name"
+        ],
+        "additionalProperties": true,
+        "properties": {
+          "address": {
+            "type": "string",
+            "description": "対象アドレス (16 進)。",
+            "pattern": "^0[xX][0-9a-fA-F]+$"
+          },
+          "name": {
+            "type": "string",
+            "description": "英数字 / _ / ひらがな / カタカナ / 漢字 / 長音符 / 中黒 のみ。先頭は英字・_・かな・漢字。空白・記号・全角英数は不可。ghidra_scripts/apply_labels.py と tools/validate_proposed_labels.py の NAME_RE と同じ規則です。",
+            "pattern": "^[A-Za-z_\\u3041-\\u3096\\u30A1-\\u30FA\\u4E00-\\u9FFF][A-Za-z_\\u3041-\\u3096\\u30A1-\\u30FA\\u4E00-\\u9FFF0-9\\u30FC\\u30FB]*$",
+            "maxLength": 128
+          },
+          "operation": {
+            "type": "string",
+            "description": "操作種別。現在は set_label のみ (省略時 set_label)。",
+            "enum": [
+              "set_label"
+            ]
+          },
+          "force": {
+            "type": "boolean",
+            "description": "true で『既存の名前を上書きしない』既定を破り、既存シンボルをリネームする。関数エントリへの適用は force でも拒否される。confidence が low の item に force は指定できない。既定 false。"
+          },
+          "address_basis": {
+            "type": "string",
+            "description": "アドレスの基準。apply は ghidra または未指定のみ処理する。",
+            "enum": [
+              "ghidra",
+              "runtime",
+              "dump_offset",
+              "unknown"
+            ]
+          },
+          "confidence": {
+            "type": "string",
+            "enum": [
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          "reason": {
+            "type": "string",
+            "description": "なぜこの名前か。用途が推測なら断定しない書き方にする。"
+          },
+          "evidence": {
+            "type": "array",
+            "description": "根拠。参照元アドレス (find_address_refs の結果) / 参照している関数 / 読み書きの幅 / 要素サイズ / 隣接データとの関係 などを書く。",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  }
+}
