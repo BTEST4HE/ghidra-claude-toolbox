@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://ghidra-claude-toolbox/schemas/runtime_observations.schema.json",
   "title": "Runtime Observations",
-  "description": "外部エミュレータのデバッガ MCP (Mesen / DuckStation / PCSX2 等) が得た**実行時の観測**を、Ghidra Claude Toolbox が読める共通の形にしたものです。人間または解析セッションが <project_root>/runtime_observations/ 配下に保存し、読み取り専用 MCP の list_runtime_observations / get_runtime_range_evidence が読みます。★この JSON は「観測できたこと」だけを記録します。**観測されなかったことは未使用の証明ではありません。**Ghidra Toolbox はエミュレータを起動も接続も制御もせず、このファイルを読むだけです。",
+  "description": "エミュレータのデバッガなど (観測の手段は問わない) で得た**実行時の観測**を、Ghidra Claude Toolbox が読める共通の形にしたものです。人間または解析セッションが <project_root>/runtime_observations/ 配下に保存し、読み取り専用 MCP の list_runtime_observations / get_runtime_range_evidence が読みます。★この JSON は「観測できたこと」だけを記録します。**観測されなかったことは未使用の証明ではありません。**Ghidra Toolbox はエミュレータを起動も接続も制御もせず、このファイルを読むだけです。",
   "type": "object",
   "required": ["schema_version", "observations"],
   "additionalProperties": true,

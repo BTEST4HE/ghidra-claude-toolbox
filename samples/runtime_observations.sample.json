@@ -1,5 +1,5 @@
 {
-  "_note": "外部エミュレータのデバッガ MCP で観測した結果を、Ghidra Claude Toolbox が読める形にしたサンプルです。<project_root>/runtime_observations/ の下に置くと list_runtime_observations / get_runtime_range_evidence が読みます。★ここに出てくるアドレスは説明用の架空の値で、実在のゲームには対応しません。★Toolbox はエミュレータを起動も接続も制御もしません。このファイルを保存するのは人間か解析セッションです。",
+  "_note": "エミュレータのデバッガなどで観測した結果を、Ghidra Claude Toolbox が読める形にしたサンプルです。<project_root>/runtime_observations/ の下に置くと list_runtime_observations / get_runtime_range_evidence が読みます。★ここに出てくるアドレスは説明用の架空の値で、実在のゲームには対応しません。★Toolbox はエミュレータを起動も接続も制御もしません。このファイルを保存するのは人間か解析セッションです。",
   "schema_version": 1,
   "capture": {
     "source": "duckstation",

@@ -9,8 +9,8 @@
   書きます（上書きしない）。それ以外のツールは読むだけで、一覧・比較でもフォルダを作りません。
 - 読む範囲・リンク / UNC の扱い・大きさの上限は
   [../docs/safety_rules.md](../docs/safety_rules.md) が正です。
-- **エミュレータも起動・接続・制御しません。** 実行時の観測は、外部の
-  デバッガ MCP が出した結果を **JSON ファイルとして読むだけ**です
+- **エミュレータも起動・接続・制御しません。** 実行時の観測は、エミュレータの
+  デバッガなどで観測した結果を **JSON ファイルとして読むだけ**です
   （`list_runtime_observations` / `get_runtime_range_evidence`）。
 - 書き込み系（コメント反映・関数作成・リネーム・型変更・配列化）は
   ツールとして**存在しません**（構造的に実行不能）。
@@ -185,7 +185,7 @@ capstone との突き合わせで、実コード約 8.7 万命令の不一致 0 
 "data_bank": "0x7E"
 ```
 
-- `cdl_jsonl` … `mesen_debug/ghidra_export.py` が出す JSONL（`"record": "context_span"`）。
+- `cdl_jsonl` … Mesen の CDL などを各自で変換した JSONL（`"record": "context_span"`。変換ツールは同梱していません）。
   **Ghidra の Program を作った CDL と同じ run のもの**を指すこと。header の CRC32 と
   export したイメージを突き合わせ、違えば `cdl_rom_mismatch` を返します。
   書いてあるのにファイルが無ければ**エラー**です（黙って仮定に落とさない）。
@@ -552,8 +552,7 @@ braf r0                 ; 飛び先 = braf のアドレス + 4 + r0
 
 ### `find_bytes` — バイト列検索 (AOB スキャン)
 
-PulseHexPy は実行中プロセスに対して AOB できますが、**export 済みイメージに対する
-手段がありませんでした**。`??` がワイルドカードです (PulseHexPy と同じ書き方)。
+export 済みイメージに対して AOB スキャンをします。`??` がワイルドカードです。
 
 ```
 "48 8B ?? ?? 89"      ワイルドカード付き

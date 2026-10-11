@@ -27,7 +27,7 @@ Ghidra にも Ghidra プロジェクトにも触れません (バイト列を受
 
 M/X の供給源 (MCP 側が WidthContext を作って渡す):
 
-  (a) bridge_config.json の `cdl_jsonl` — `mesen_debug/ghidra_export.py` が出す
+  (a) bridge_config.json の `cdl_jsonl` — Mesen の CDL などを各自で変換した
       JSONL の `"record": "context_span"` (canonical_address / length / m / x /
       certainty = recorded / static_only / ambiguous)
   (b) 無ければ REP / SEP の追跡だけ (`assumed` から始まる)
@@ -268,7 +268,7 @@ def parse_bus_address(text):
 
 # --- CDL (Mesen) の読み込み ---------------------------------------------------
 def load_cdl_jsonl(path):
-    """mesen_debug/ghidra_export.py の JSONL から幅の区間を読みます。
+    """cdl_jsonl (CDL を変換した JSONL) から幅の区間を読みます。
 
     返り値: dict
       spans      [(start, end_inclusive, m, x, certainty)] を start 順に

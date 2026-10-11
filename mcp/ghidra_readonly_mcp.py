@@ -2902,7 +2902,7 @@ class ExportRepo(object):
         """65816 の M/X (CDL) と D / DBR の前提をまとめた WidthContext を返します。
 
         bridge_config.json:
-          "cdl_jsonl":   mesen_debug/ghidra_export.py の JSONL (絶対パスか project root 相対)
+          "cdl_jsonl":   CDL を変換した JSONL (絶対パスか project root 相対)
           "direct_page": D の値 (既定は $0000 と**仮定**)
           "data_bank":   DBR の値 (既定は命令のバンクと**仮定**)
 
@@ -5204,7 +5204,7 @@ class ExportRepo(object):
                    limit=DEFAULT_LIMIT, context=16):
         """export 済みメモリイメージから **バイト列を検索**します (AOB スキャン)。
 
-        `??` をワイルドカードにできます。PulseHexPy の AOB と同じ書き方です:
+        `??` をワイルドカードにできます:
 
             "48 8B ?? ?? 89"      ワイルドカード付き
             "0f 80 04 08"         そのまま
@@ -9040,7 +9040,7 @@ class ExportRepo(object):
     #
     # ★この MCP は **エミュレータを起動も接続も制御もしません。** 読むのは
     #   人間か解析セッションが `<project_root>/runtime_observations/` に保存した
-    #   JSON だけです (外部デバッガ MCP をここから呼ぶことはしません)。
+    #   JSON だけです (外部のデバッガをここから呼ぶことはしません)。
     #
     # ★**観測されなかったことは「未使用」の証明ではありません。** どの場面を
     #   どこまで実行したかで結果は変わります。この層は必ず `not_observed` /
@@ -9371,7 +9371,7 @@ class ExportRepo(object):
                                   offset=0, limit=DEFAULT_LIMIT):
         """`runtime_observations/` に保存された **実行時の観測**を一覧します。
 
-        外部エミュレータのデバッガ MCP (Mesen / DuckStation / PCSX2 等) で観測した
+        エミュレータのデバッガなど (観測の手段は問わない) で観測した
         結果を、**Ghidra の番地に直して**照会するためのものです。
         この MCP はエミュレータを起動も接続も制御もしません。読むのは
         プロジェクト内に保存された JSON だけです。
@@ -9435,7 +9435,7 @@ class ExportRepo(object):
             result["hint"] = {
                 "message": "観測ファイルがありません (エラーではありません)。",
                 "how": [
-                    "外部のエミュレータ MCP (Mesen / DuckStation / PCSX2 等) で"
+                    "エミュレータのデバッガなど (手段は問わない) で"
                     "実行・観測する。",
                     "その結果を schemas/runtime_observations.schema.json の形にして "
                     "{0}/ に保存する (人間か解析セッションが保存します)。".format(
@@ -12042,7 +12042,7 @@ class ExportRepo(object):
                          "list_runtime_observations / get_runtime_range_evidence "
                          "で引けます。**観測 0 件は「未使用」ではありません。**"
                          if obs_files else
-                         "観測ファイルなし。外部のデバッガ MCP で観測した結果を "
+                         "観測ファイルなし。エミュレータのデバッガなどで観測した結果を "
                          "schemas/runtime_observations.schema.json の形で "
                          "runtime_observations/ に保存すると引けるようになります "
                          "(保存するのは人間か解析セッション。MCP は書きません)。"),
@@ -14548,7 +14548,7 @@ def build_tools(resolver):
                                   program: str = None) -> dict:
         """外部エミュレータで観測した **実行時の記録** を Ghidra 番地で一覧する。
 
-        Mesen / DuckStation / PCSX2 などのデバッガ MCP で観測した結果を、
+        エミュレータのデバッガなど (観測の手段は問わない) で観測した結果を、
         `<project_root>/runtime_observations/` に JSON で保存しておくと、
         ここから**静的解析と同じアドレス基準で**引ける。
 

@@ -19,7 +19,7 @@
 #   したがって既存の命令があっても設定でき、逆アセンブルの結果は変わりません
 #   (変わるのは decompiler が使う「その範囲での既知の値」だけ)。
 #   ctx_MF / ctx_XF / ctx_EF は命令長を変えるので**このスクリプトでは扱いません**
-#   (Mesen の CDL から ApplySnesTrace.java が書くもの)。
+#   (命令長が変わり、逆アセンブルからやり直しになるため)。
 #   ※ "B" は SLEIGH ではアキュムレータの上位バイトです。DBR の別名として受けません。
 #
 # 安全ルール:
@@ -66,9 +66,9 @@ ALLOWED_REGISTERS = {
 }
 # 名前を間違えたときに理由を返すための表 (設定はしない)。
 REFUSED_REGISTERS = {
-    "CTX_MF": u"命令長を変えるコンテキスト。M/X/E は ApplySnesTrace.java (CDL) の担当です",
-    "CTX_XF": u"命令長を変えるコンテキスト。M/X/E は ApplySnesTrace.java (CDL) の担当です",
-    "CTX_EF": u"命令長を変えるコンテキスト。M/X/E は ApplySnesTrace.java (CDL) の担当です",
+    "CTX_MF": u"命令長を変えるコンテキスト。M/X/E はこのスクリプトでは設定しません",
+    "CTX_XF": u"命令長を変えるコンテキスト。M/X/E はこのスクリプトでは設定しません",
+    "CTX_EF": u"命令長を変えるコンテキスト。M/X/E はこのスクリプトでは設定しません",
     "CONTEXTREG": u"コンテキストレジスタそのものは触りません",
     "PBR": u"PBR は PC のバンクそのもの (Ghidra は番地から決める) なので設定しません",
     "B": u"SLEIGH の B はアキュムレータの上位バイトです。データバンクは DBR と書いてください",

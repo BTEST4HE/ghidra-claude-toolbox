@@ -167,7 +167,7 @@
 
 ## 実行時観測（runtime_observations/）
 
-外部エミュレータのデバッガ MCP で観測した結果を、人間か解析セッションが JSON で保存し、
+エミュレータのデバッガなど（観測の手段は問わない）で観測した結果を、人間か解析セッションが JSON で保存し、
 MCP は**読むだけ**です（`list_runtime_observations` / `get_runtime_range_evidence`）。
 
 - 実行時アドレスは `bridge_config.json` の `address_translations` の規則でだけ

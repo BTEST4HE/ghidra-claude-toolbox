@@ -34,9 +34,9 @@ ALLOWED_EVIDENCE_KIND = ("runtime", "code", "cdl", "doc")
 # ★片方だけ直すと「検証は通るのに反映で弾かれる」ので、必ずまとめて直すこと。
 ALLOWED_REGISTERS = {"DP": ("DP", 16), "D": ("DP", 16), "DBR": ("DBR", 8)}
 REFUSED_REGISTERS = {
-    "CTX_MF": "命令長を変えるコンテキスト。M/X/E は ApplySnesTrace.java (CDL) の担当です",
-    "CTX_XF": "命令長を変えるコンテキスト。M/X/E は ApplySnesTrace.java (CDL) の担当です",
-    "CTX_EF": "命令長を変えるコンテキスト。M/X/E は ApplySnesTrace.java (CDL) の担当です",
+    "CTX_MF": "命令長を変えるコンテキスト。M/X/E はこのスクリプトでは設定しません",
+    "CTX_XF": "命令長を変えるコンテキスト。M/X/E はこのスクリプトでは設定しません",
+    "CTX_EF": "命令長を変えるコンテキスト。M/X/E はこのスクリプトでは設定しません",
     "CONTEXTREG": "コンテキストレジスタそのものは触りません",
     "PBR": "PBR は PC のバンクそのもの (Ghidra は番地から決める) なので設定しません",
     "B": "SLEIGH の B はアキュムレータの上位バイトです。データバンクは DBR と書いてください",

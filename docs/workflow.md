@@ -64,7 +64,7 @@ NG が出たら直します。OK になるまで反映しません。
 ## 応用: 実行時の観測を証拠として足す
 
 1. 静的に「怪しい範囲」を決める（`find_address_refs` / `find_pointers_to` / `classify_range` 等）。
-2. 外部エミュレータのデバッガ MCP で、その範囲だけを観測する
+2. エミュレータのデバッガなど（手段は問わない）で、その範囲だけを観測する
    （道具箱はエミュレータを起動も接続も制御もしません）。
 3. 観測結果を `runtime_observations/` に 1 ファイル = 1 場面で保存する。
    `capture.scenario` と `capture.coverage_note`（何をどこまで実行したか）を必ず書く。
